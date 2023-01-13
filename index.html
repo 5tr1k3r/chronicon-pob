@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="title-bg">
+            <h1>Wolf summoner DPS calculator</h1>
+        </div>
+        <div class="container">
+            <div class="section-container">
+                <div class="stat-screen-section">
+                    <h3>Stats</h3>
+                    <div class="single-entry">
+                        <label for="dmg-input">Damage</label><input type="number" id="dmg-input" value="420" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="as-input">Attack speed, %</label><input type="number" id="as-input" value="100" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="critchance-input">Crit chance, %</label
+                        ><input type="number" id="critchance-input" value="5" max="100" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="critdmg-input">Crit damage, %</label
+                        ><input type="number" id="critdmg-input" value="150" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="frostdmg-input">Frost damage, %</label
+                        ><input type="number" id="frostdmg-input" value="100" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="companiondmg-input">Companion damage, %</label
+                        ><input type="number" id="companiondmg-input" value="100" />
+                    </div>
+                    <div class="single-entry">
+                        <label for="cdr-input">Cooldown reduction, %</label
+                        ><input type="number" id="cdr-input" value="0" />
+                    </div>
+                </div>
+                <div id="item-section">
+                    <h3>Items</h3>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="item-bloodscent" title="todo stats">Bloodscent</label
+                        ><input type="checkbox" id="item-bloodscent" />
+                    </div>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="item-masters">Master's Command</label
+                        ><input type="checkbox" id="item-masters" />
+                    </div>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="item-wolf-tooth">Wolf Tooth Necklace</label
+                        ><input type="checkbox" id="item-wolf-tooth" />
+                    </div>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="item-packleader">Packleader</label
+                        ><input type="checkbox" id="item-packleader" />
+                    </div>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="item-wolfcaster">Wolfcaster</label
+                        ><input type="checkbox" id="item-wolfcaster" />
+                    </div>
+                </div>
+                <div class="misc-section">
+                    <h3>Misc</h3>
+                    <select id="wolf-lvl">
+                        <option value="1">Wolfpack level 1</option>
+                        <option value="2">Wolfpack level 2</option>
+                        <option value="3">Wolfpack level 3</option>
+                        <option value="4">Wolfpack level 4</option>
+                        <option value="5">Wolfpack level 5</option>
+                        <option value="6">Wolfpack level 6</option>
+                    </select>
+                    <div class="single-entry">
+                        <label class="checkbox-label" for="master-tamer">Master Tamer</label
+                        ><input type="checkbox" id="master-tamer" />
+                    </div>
+                    <br /><br />
+                    <button id="select-all-btn">Select all items</button>
+                    <button id="reset-btn">Reset</button>
+                </div>
+            </div>
+            <div class="section-container" id="calced-stats-container">
+                <div id="calced-stats-section">
+                    <h3>Calculated stats</h3>
+                    <table>
+                        <tr>
+                            <td>Crit effect modifier</td>
+                            <td id="crit-mod-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Attacks per second</td>
+                            <td id="aps-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Wolves total</td>
+                            <td id="wolf-count-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Wolfpack %frost dmg</td>
+                            <td id="wolfpack-p-dmg-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Ice Shard %frost dmg</td>
+                            <td id="iceshard-p-dmg-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Ice Shard damage</td>
+                            <td id="iceshard-dmg-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>Wolf damage on crit</td>
+                            <td id="wolf-crit-dmg-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>One wolf DPS</td>
+                            <td id="wolf-dps-calc"></td>
+                        </tr>
+                        <tr>
+                            <td>All wolves DPS</td>
+                            <td id="wolves-dps-calc"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="index.js"></script>
+    </body>
+</html>

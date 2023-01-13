@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+body {
+    font-family: "Inter";
+    margin: 0;
+    background-color: rgb(244, 244, 244);
+}
+
+.title-bg {
+    background-image: linear-gradient(to bottom right, #014d83, lightblue);
+    /*background-image: linear-gradient(#014d83, rgb(244, 244, 244));*/
+    padding: 5px;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 32px;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+label {
+    margin: 5px 10px;
+}
+
+input {
+    height: 25px;
+    outline-color: green;
+    border-radius: 10px;
+    border: none;
+    accent-color: green;
+}
+
+input[type="number"] {
+    width: 90px;
+    font-size: 100%;
+    text-align: center;
+}
+
+input[type="checkbox"] {
+    scale: 1.4;
+    cursor: pointer;
+}
+
+select {
+    scale: 1.25;
+    margin: 5px;
+    border: none;
+    outline-color: green;
+    border: none;
+    cursor: pointer;
+}
+
+button {
+    text-align: center;
+    width: 90%;
+    background-color: lightblue;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: lightgreen;
+}
+
+.checkbox-label {
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 750px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 10px cornflowerblue;
+}
+
+.stat-screen-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.single-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.misc-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* this is needed to hide spinners*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* this is needed to hide spinners*/
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: auto;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+td {
+    border: 0.5px solid;
+    padding: 8px;
+    min-width: 150px;
+}
+
+#calced-stats-container {
+    display: flex;
+    justify-content: space-around;
+}
