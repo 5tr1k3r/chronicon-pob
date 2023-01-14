@@ -15,3 +15,5 @@ duno what to do with alpha yet, later
 
 where to hold data? probably json somewhere
 should figure out formula for breakpoints or use values from the table?
+
+todo add B, T for big numbers

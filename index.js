@@ -1,5 +1,6 @@
 const selectAllBtn = document.getElementById("select-all-btn");
 const resetBtn = document.getElementById("reset-btn");
+const loadBtn = document.getElementById("load-btn");
 const itemSectionEl = document.getElementById("item-section");
 const wolfLevel = document.getElementById("wolf-lvl");
 const masterTamer = document.getElementById("master-tamer");
@@ -24,6 +25,7 @@ const wolfCountCalc = document.getElementById("wolf-count-calc");
 const wolfpackPDmgCalc = document.getElementById("wolfpack-p-dmg-calc");
 const iceshardPDmgCalc = document.getElementById("iceshard-p-dmg-calc");
 const iceshardDmgCalc = document.getElementById("iceshard-dmg-calc");
+const wolfAvgDmgCalc = document.getElementById("wolf-avg-dmg-calc");
 const wolfCritDmgCalc = document.getElementById("wolf-crit-dmg-calc");
 const wolfDpsCalc = document.getElementById("wolf-dps-calc");
 const wolvesDpsCalc = document.getElementById("wolves-dps-calc");
@@ -40,12 +42,15 @@ let alphaSkillDmg;
 let alphaResultDmg;
 let iceshardPDmg;
 let iceshardDmg;
+let wolfAvgAttackDmg;
+let wolfAttackDmgOnCrit;
 
 function assignEventListeners() {
     selectAllBtn.addEventListener("click", selectAllItems);
     selectAllBtn.addEventListener("click", calcEverything);
     resetBtn.addEventListener("click", resetInput);
     resetBtn.addEventListener("click", calcEverything);
+    loadBtn.addEventListener("click", load);
 
     for (let element of document.querySelectorAll('input[type="number"] ')) {
         element.addEventListener("input", calcEverything);
@@ -88,6 +93,7 @@ function calcEverything() {
         iceshardPDmg = calcIceshardPDamage();
         iceshardDmg = calcIceshardDamage();
     }
+    calcWolfAttackDamage();
 
     renderCalculatedStats();
 }
@@ -97,13 +103,14 @@ function renderCalculatedStats() {
     wolfpackPDmgCalc.textContent = toPercentString(wolfpackResultDmg, 0);
     if (itemWolfcaster.checked) {
         iceshardPDmgCalc.textContent = toPercentString(iceshardPDmg, 0);
-        let iceshardMin = Math.round(iceshardDmg * 0.85);
-        let iceshardMax = Math.round(iceshardDmg * 1.15);
-        iceshardDmgCalc.textContent = `${iceshardMin.toLocaleString()} - ${iceshardMax.toLocaleString()}`;
+        iceshardDmgCalc.textContent = getMinMaxDmgString(iceshardDmg);
     } else {
         iceshardPDmgCalc.textContent = "";
         iceshardDmgCalc.textContent = "";
     }
+
+    wolfAvgDmgCalc.textContent = wolfAvgAttackDmg.toLocaleString();
+    wolfCritDmgCalc.textContent = getMinMaxDmgString(wolfAttackDmgOnCrit);
 }
 
 function calcCritEffectModifier() {
@@ -142,7 +149,37 @@ function calcIceshardPDamage() {
 }
 
 function calcIceshardDamage() {
-    return Math.round(iceshardPDmg * Number(damageInput.value) * fromPercent(frostDamageInput));
+    return iceshardPDmg * Number(damageInput.value) * fromPercent(frostDamageInput);
+}
+
+function calcWolfAttackDamage() {
+    let bloodscentMulti = itemBloodscent.checked ? 3.0 : 1.0;
+    let wolfAttackDmg = wolfpackResultDmg * Number(damageInput.value) * fromPercent(frostDamageInput) * bloodscentMulti;
+
+    wolfAvgAttackDmg = Math.round(wolfAttackDmg * critEffectModifier);
+    wolfAttackDmgOnCrit = wolfAttackDmg * fromPercent(critDmgInput);
+}
+
+function getMinMaxDmgString(dmg) {
+    let min = Math.round(dmg * 0.85);
+    let max = Math.round(dmg * 1.15);
+    return `${min.toLocaleString()} - ${max.toLocaleString()}`;
+}
+
+function load() {
+    selectAllBtn.click();
+    wolfLevel.selectedIndex = 5;
+    masterTamer.checked = true;
+
+    damageInput.value = "12808487";
+    // attackSpeedInput.value = "";
+    critChanceInput.value = "96";
+    critDmgInput.value = "570";
+    frostDamageInput.value = "668";
+    companionDmgInput.value = "2956";
+    // cdrInput.value = "";
+
+    calcEverything();
 }
 
 assignEventListeners();
