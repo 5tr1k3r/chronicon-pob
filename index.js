@@ -156,14 +156,12 @@ function calcWolfAttackDamage() {
     let bloodscentMulti = itemBloodscent.checked ? 3.0 : 1.0;
     let wolfAttackDmg = wolfpackResultDmg * Number(damageInput.value) * fromPercent(frostDamageInput) * bloodscentMulti;
 
-    wolfAvgAttackDmg = Math.round(wolfAttackDmg * critEffectModifier);
+    wolfAvgAttackDmg = convertToShortNumber(wolfAttackDmg * critEffectModifier);
     wolfAttackDmgOnCrit = wolfAttackDmg * fromPercent(critDmgInput);
 }
 
 function getMinMaxDmgString(dmg) {
-    let min = Math.round(dmg * 0.85);
-    let max = Math.round(dmg * 1.15);
-    return `${min.toLocaleString()} - ${max.toLocaleString()}`;
+    return `${convertToShortNumber(dmg * 0.85)} - ${convertToShortNumber(dmg * 1.15)}`;
 }
 
 function load() {
@@ -180,6 +178,20 @@ function load() {
     // cdrInput.value = "";
 
     calcEverything();
+}
+
+function convertToShortNumber(num) {
+    if (num > 1e12) {
+        return `${(num / 1e12).toFixed(1)}T`;
+    } else if (num > 1e9) {
+        return `${(num / 1e9).toFixed(1)}B`;
+    } else if (num > 1e6) {
+        return `${(num / 1e6).toFixed(1)}M`;
+    } else if (num > 1e3) {
+        return `${(num / 1e3).toFixed(1)}K`;
+    }
+
+    return Math.round(num).toString();
 }
 
 assignEventListeners();
