@@ -153,7 +153,7 @@ function calcIceshardDamage() {
 }
 
 function calcWolfAttackDamage() {
-    let bloodscentMulti = itemBloodscent.checked ? 3.0 : 1.0;
+    let bloodscentMulti = itemBloodscent.checked ? 4.0 : 1.0;
     let wolfAttackDmg = wolfpackResultDmg * Number(damageInput.value) * fromPercent(frostDamageInput) * bloodscentMulti;
 
     wolfAvgAttackDmg = convertToShortNumber(wolfAttackDmg * critEffectModifier);
