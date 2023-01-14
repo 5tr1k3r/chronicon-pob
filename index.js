@@ -2,7 +2,7 @@ const selectAllBtn = document.getElementById("select-all-btn");
 const resetBtn = document.getElementById("reset-btn");
 const loadBtn = document.getElementById("load-btn");
 const itemSectionEl = document.getElementById("item-section");
-const wolfLevel = document.getElementById("wolf-lvl");
+const wolfLevelSelect = document.getElementById("wolf-lvl");
 const masterTamer = document.getElementById("master-tamer");
 
 const damageInput = document.getElementById("dmg-input");
@@ -18,6 +18,7 @@ const itemMasters = document.getElementById("item-masters");
 const itemWolfTooth = document.getElementById("item-wolf-tooth");
 const itemPackLeader = document.getElementById("item-packleader");
 const itemWolfcaster = document.getElementById("item-wolfcaster");
+const itemCall = document.getElementById("item-call");
 
 const critModCalc = document.getElementById("crit-mod-calc");
 const apsCalc = document.getElementById("aps-calc");
@@ -44,6 +45,8 @@ let iceshardPDmg;
 let iceshardDmg;
 let wolfAvgAttackDmg;
 let wolfAttackDmgOnCrit;
+let wolfCount;
+let alphaCount;
 
 function assignEventListeners() {
     selectAllBtn.addEventListener("click", selectAllItems);
@@ -60,7 +63,7 @@ function assignEventListeners() {
         element.addEventListener("change", calcEverything);
     }
 
-    wolfLevel.addEventListener("change", calcEverything);
+    wolfLevelSelect.addEventListener("change", calcEverything);
 }
 
 function selectAllItems() {
@@ -75,7 +78,7 @@ function resetInput() {
         element.checked = false;
     }
 
-    wolfLevel.selectedIndex = 0;
+    wolfLevelSelect.selectedIndex = 0;
 }
 
 function fromPercent(inputElement) {
@@ -94,6 +97,7 @@ function calcEverything() {
         iceshardDmg = calcIceshardDamage();
     }
     calcWolfAttackDamage();
+    countWolves();
 
     renderCalculatedStats();
 }
@@ -111,6 +115,11 @@ function renderCalculatedStats() {
 
     wolfAvgDmgCalc.textContent = wolfAvgAttackDmg.toLocaleString();
     wolfCritDmgCalc.textContent = getMinMaxDmgString(wolfAttackDmgOnCrit);
+
+    wolfCountCalc.textContent = wolfCount;
+    if (alphaCount === 1) {
+        wolfCountCalc.textContent += ` + Alpha`;
+    }
 }
 
 function calcCritEffectModifier() {
@@ -124,12 +133,12 @@ function calcCritEffectModifier() {
 }
 
 function calcWolfpackDamage() {
-    wolfpackSkillDmg = wolfpackBaseDmg + wolfpackDmgStep * wolfLevel.selectedIndex;
+    wolfpackSkillDmg = wolfpackBaseDmg + wolfpackDmgStep * wolfLevelSelect.selectedIndex;
     return wolfpackSkillDmg * calcSkillMultipliers();
 }
 
 function calcAlphaDamage() {
-    alphaSkillDmg = alphaBaseDmg + alphaDmgStep * wolfLevel.selectedIndex;
+    alphaSkillDmg = alphaBaseDmg + alphaDmgStep * wolfLevelSelect.selectedIndex;
     return alphaSkillDmg * calcSkillMultipliers();
 }
 
@@ -166,7 +175,7 @@ function getMinMaxDmgString(dmg) {
 
 function load() {
     selectAllBtn.click();
-    wolfLevel.selectedIndex = 5;
+    wolfLevelSelect.selectedIndex = 5;
     masterTamer.checked = true;
 
     damageInput.value = "12808487";
@@ -192,6 +201,23 @@ function convertToShortNumber(num) {
     }
 
     return Math.round(num).toString();
+}
+
+function countWolves() {
+    let wolfLevel = wolfLevelSelect.selectedIndex + 1;
+    if (wolfLevel >= 5) {
+        wolfCount = 4;
+    } else if (wolfLevel >= 3) {
+        wolfCount = 3;
+    } else {
+        wolfCount = 2;
+    }
+
+    if (itemCall.checked) {
+        wolfCount += 3;
+    }
+
+    alphaCount = itemPackLeader.checked ? 1 : 0;
 }
 
 assignEventListeners();
