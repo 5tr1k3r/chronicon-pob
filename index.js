@@ -60,9 +60,7 @@ let wolvesDps;
 
 function assignEventListeners() {
     selectAllBtn.addEventListener("click", selectAllItems);
-    selectAllBtn.addEventListener("click", calcEverything);
     resetBtn.addEventListener("click", resetInput);
-    resetBtn.addEventListener("click", calcEverything);
     loadBtn.addEventListener("click", load);
 
     for (let element of document.querySelectorAll('input[type="number"] ')) {
@@ -74,12 +72,26 @@ function assignEventListeners() {
     }
 
     wolfLevelSelect.addEventListener("change", calcEverything);
+    itemWolfcaster.addEventListener("change", toggleWolfcasterStats);
+}
+
+function toggleWolfcasterStats() {
+    for (let element of document.querySelectorAll("tr.wolfcaster-stats")) {
+        if (itemWolfcaster.checked) {
+            element.classList.add("wolfcaster-on");
+        } else {
+            element.classList.remove("wolfcaster-on");
+        }
+    }
 }
 
 function selectAllItems() {
     for (let element of itemSectionEl.getElementsByTagName("input")) {
         element.checked = true;
     }
+
+    toggleWolfcasterStats();
+    calcEverything();
 }
 
 function resetInput() {
@@ -89,6 +101,8 @@ function resetInput() {
     }
 
     wolfLevelSelect.selectedIndex = 0;
+    toggleWolfcasterStats();
+    calcEverything();
 }
 
 function fromPercent(inputElement) {

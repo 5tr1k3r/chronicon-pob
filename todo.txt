@@ -1,19 +1,13 @@
 todo add explanation text on hover on items: title attribute
-todo add limiting crit chance to 100% (see pw-generator index.html)
 todo highlight stats/items that affect specific calculated stats
 
 Sections: attack speed, crit, tooltips, dps
-2 types of data: inputed and computed
-Can compute the amount of wolves based on skill level and items
-Bleed to do later
 
 Attack speed: attacks per second, frames per attack, attack time (character), attack time (wolf), what's required for next breakpoint (later)
-Crit: crit effect modifier
-Tooltips: how many wolves, %dmg for wolves, %dmg for ice shard, dmg for ice shard (with range)
-DPS: per one wolf, per all wolves
-duno what to do with alpha yet, later
 
 where to hold data? probably json somewhere
 should figure out formula for breakpoints or use values from the table?
 
 todo add B, T for big numbers
+todo add damage over time calculations (with bleed calc), how much dps changes in x time, total dmg dealt
+todo add explanation text on Load button

@@ -157,3 +157,11 @@ td {
     display: flex;
     justify-content: space-around;
 }
+
+tr.wolfcaster-stats {
+    visibility: collapse;
+}
+
+tr.wolfcaster-on {
+    visibility: visible;
+}
