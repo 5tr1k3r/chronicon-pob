@@ -1,4 +1,4 @@
-import { findAttackFrames, findAPS, findWolfAttackCooldown } from "./attack-speed.js";
+import { findAttackFrames, findAPS, findWolfAttackCooldown, researchNextBreakpoint } from "./attack-speed.js";
 
 const selectAllBtn = document.getElementById("select-all-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -59,6 +59,7 @@ let attackCooldown;
 let aps;
 let wolfDps;
 let wolvesDps;
+let nextBPtext;
 
 function assignEventListeners() {
     selectAllBtn.addEventListener("click", selectAllItems);
@@ -118,14 +119,12 @@ function toPercentString(num, precision) {
 function calcEverything() {
     calcCritEffectModifier();
     calcWolfSkillsDamage();
-    if (itemWolfcaster.checked) {
-        iceshardPDmg = calcIceshardPDamage();
-        iceshardDmg = calcIceshardDamage();
-    }
+    calcWolfcaster();
     calcWolfAttackDamage();
     countWolves();
     calcAttackSpeed();
     calcDPS();
+    calcNextBreakpoint();
 
     renderCalculatedStats();
 }
@@ -155,6 +154,8 @@ function renderCalculatedStats() {
 
     wolfDpsCalc.textContent = convertToShortNumber(wolfDps);
     wolvesDpsCalc.textContent = convertToShortNumber(wolvesDps);
+
+    nextBPCalc.textContent = nextBPtext;
 }
 
 function calcCritEffectModifier() {
@@ -187,12 +188,11 @@ function calcSkillMultipliers() {
     return companionDamage * mastersMulti * masterTamerMulti * increasedDmgMulti;
 }
 
-function calcIceshardPDamage() {
-    return alphaResultDmg * 2.0;
-}
-
-function calcIceshardDamage() {
-    return iceshardPDmg * Number(damageInput.value) * fromPercent(frostDamageInput);
+function calcWolfcaster() {
+    if (itemWolfcaster.checked) {
+        iceshardPDmg = alphaResultDmg * 2.0;
+        iceshardDmg = iceshardPDmg * Number(damageInput.value) * fromPercent(frostDamageInput);
+    }
 }
 
 function calcWolfAttackDamage() {
@@ -275,6 +275,17 @@ function calcDPS() {
         let alphaDps = aps * alphaAvgAttackDmg;
         wolvesDps += alphaDps * alphaCount;
     }
+}
+
+function calcNextBreakpoint() {
+    nextBPtext = researchNextBreakpoint(
+        attackFrames,
+        attackCooldown,
+        attackSpeedInput.value,
+        cdrInput.value,
+        itemMasters.checked,
+        enrage.checked
+    );
 }
 
 assignEventListeners();
