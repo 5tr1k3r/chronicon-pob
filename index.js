@@ -6,7 +6,6 @@ const loadBtn = document.getElementById("load-btn");
 const itemSectionEl = document.getElementById("item-section");
 const wolfLevelSelect = document.getElementById("wolf-lvl");
 const masterTamer = document.getElementById("master-tamer");
-const enrage = document.getElementById("enrage");
 
 const damageInput = document.getElementById("dmg-input");
 const attackSpeedInput = document.getElementById("as-input");
@@ -258,7 +257,7 @@ function countWolves() {
 
 function calcAttackSpeed() {
     if (attackSpeedInput.value > 0) {
-        attackFrames = findAttackFrames(attackSpeedInput.value, itemMasters.checked, enrage.checked);
+        attackFrames = findAttackFrames(attackSpeedInput.value, itemMasters.checked);
         attackCooldown = findWolfAttackCooldown(cdrInput.value);
         aps = findAPS(attackFrames, attackCooldown);
     } else {
@@ -283,8 +282,7 @@ function calcNextBreakpoint() {
         attackCooldown,
         attackSpeedInput.value,
         cdrInput.value,
-        itemMasters.checked,
-        enrage.checked
+        itemMasters.checked
     );
 }
 
