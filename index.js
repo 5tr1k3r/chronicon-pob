@@ -1,9 +1,12 @@
+import { findAttackFrames, findAPS } from "./attack-speed.js";
+
 const selectAllBtn = document.getElementById("select-all-btn");
 const resetBtn = document.getElementById("reset-btn");
 const loadBtn = document.getElementById("load-btn");
 const itemSectionEl = document.getElementById("item-section");
 const wolfLevelSelect = document.getElementById("wolf-lvl");
 const masterTamer = document.getElementById("master-tamer");
+const enrage = document.getElementById("enrage");
 
 const damageInput = document.getElementById("dmg-input");
 const attackSpeedInput = document.getElementById("as-input");
@@ -20,8 +23,10 @@ const itemPackLeader = document.getElementById("item-packleader");
 const itemWolfcaster = document.getElementById("item-wolfcaster");
 const itemCall = document.getElementById("item-call");
 
-const critModCalc = document.getElementById("crit-mod-calc");
+const attackFramesCalc = document.getElementById("attack-frames-calc");
 const apsCalc = document.getElementById("aps-calc");
+const nextBPCalc = document.getElementById("next-bp-calc");
+const critModCalc = document.getElementById("crit-mod-calc");
 const wolfCountCalc = document.getElementById("wolf-count-calc");
 const wolfpackPDmgCalc = document.getElementById("wolfpack-p-dmg-calc");
 const iceshardPDmgCalc = document.getElementById("iceshard-p-dmg-calc");
@@ -44,9 +49,14 @@ let alphaResultDmg;
 let iceshardPDmg;
 let iceshardDmg;
 let wolfAvgAttackDmg;
+let alphaAvgAttackDmg;
 let wolfAttackDmgOnCrit;
 let wolfCount;
 let alphaCount;
+let attackFrames;
+let aps;
+let wolfDps;
+let wolvesDps;
 
 function assignEventListeners() {
     selectAllBtn.addEventListener("click", selectAllItems);
@@ -90,14 +100,16 @@ function toPercentString(num, precision) {
 }
 
 function calcEverything() {
-    critEffectModifier = calcCritEffectModifier();
-    wolfpackResultDmg = calcWolfpackDamage();
+    calcCritEffectModifier();
+    calcWolfSkillsDamage();
     if (itemWolfcaster.checked) {
         iceshardPDmg = calcIceshardPDamage();
         iceshardDmg = calcIceshardDamage();
     }
     calcWolfAttackDamage();
     countWolves();
+    calcAttackSpeed();
+    calcDPS();
 
     renderCalculatedStats();
 }
@@ -113,13 +125,19 @@ function renderCalculatedStats() {
         iceshardDmgCalc.textContent = "";
     }
 
-    wolfAvgDmgCalc.textContent = wolfAvgAttackDmg.toLocaleString();
+    wolfAvgDmgCalc.textContent = convertToShortNumber(wolfAvgAttackDmg);
     wolfCritDmgCalc.textContent = getMinMaxDmgString(wolfAttackDmgOnCrit);
 
     wolfCountCalc.textContent = wolfCount;
     if (alphaCount === 1) {
         wolfCountCalc.textContent += ` + Alpha`;
     }
+
+    attackFramesCalc.textContent = attackFrames;
+    apsCalc.textContent = aps.toFixed(2);
+
+    wolfDpsCalc.textContent = convertToShortNumber(wolfDps);
+    wolvesDpsCalc.textContent = convertToShortNumber(wolvesDps);
 }
 
 function calcCritEffectModifier() {
@@ -129,17 +147,16 @@ function calcCritEffectModifier() {
     let nonCritPortion = 1 - critChance;
     let critPortion = critChance * critDamage;
 
-    return nonCritPortion + critPortion;
+    critEffectModifier = nonCritPortion + critPortion;
 }
 
-function calcWolfpackDamage() {
+function calcWolfSkillsDamage() {
+    let skillMultipliers = calcSkillMultipliers();
     wolfpackSkillDmg = wolfpackBaseDmg + wolfpackDmgStep * wolfLevelSelect.selectedIndex;
-    return wolfpackSkillDmg * calcSkillMultipliers();
-}
+    wolfpackResultDmg = wolfpackSkillDmg * skillMultipliers;
 
-function calcAlphaDamage() {
     alphaSkillDmg = alphaBaseDmg + alphaDmgStep * wolfLevelSelect.selectedIndex;
-    return alphaSkillDmg * calcSkillMultipliers();
+    alphaResultDmg = alphaSkillDmg * skillMultipliers;
 }
 
 function calcSkillMultipliers() {
@@ -154,7 +171,7 @@ function calcSkillMultipliers() {
 }
 
 function calcIceshardPDamage() {
-    return calcAlphaDamage() * 2.0;
+    return alphaResultDmg * 2.0;
 }
 
 function calcIceshardDamage() {
@@ -164,8 +181,10 @@ function calcIceshardDamage() {
 function calcWolfAttackDamage() {
     let bloodscentMulti = itemBloodscent.checked ? 4.0 : 1.0;
     let wolfAttackDmg = wolfpackResultDmg * Number(damageInput.value) * fromPercent(frostDamageInput) * bloodscentMulti;
+    let alphaAttackDmg = alphaResultDmg * Number(damageInput.value) * fromPercent(frostDamageInput) * bloodscentMulti;
 
-    wolfAvgAttackDmg = convertToShortNumber(wolfAttackDmg * critEffectModifier);
+    wolfAvgAttackDmg = wolfAttackDmg * critEffectModifier;
+    alphaAvgAttackDmg = alphaAttackDmg * critEffectModifier;
     wolfAttackDmgOnCrit = wolfAttackDmg * fromPercent(critDmgInput);
 }
 
@@ -218,6 +237,25 @@ function countWolves() {
     }
 
     alphaCount = itemPackLeader.checked ? 1 : 0;
+}
+
+function calcAttackSpeed() {
+    if (attackSpeedInput.value > 0) {
+        attackFrames = findAttackFrames(attackSpeedInput.value, itemMasters.checked, enrage.checked);
+        aps = findAPS(attackFrames);
+    } else {
+        attackFrames = "";
+        aps = "";
+    }
+}
+
+function calcDPS() {
+    wolfDps = aps * wolfAvgAttackDmg;
+    wolvesDps = wolfDps * wolfCount;
+    if (alphaCount > 0) {
+        let alphaDps = aps * alphaAvgAttackDmg;
+        wolvesDps += alphaDps * alphaCount;
+    }
 }
 
 assignEventListeners();
