@@ -1,4 +1,4 @@
-import { findAttackFrames, findAPS } from "./attack-speed.js";
+import { findAttackFrames, findAPS, findWolfAttackCooldown } from "./attack-speed.js";
 
 const selectAllBtn = document.getElementById("select-all-btn");
 const resetBtn = document.getElementById("reset-btn");
@@ -24,6 +24,7 @@ const itemWolfcaster = document.getElementById("item-wolfcaster");
 const itemCall = document.getElementById("item-call");
 
 const attackFramesCalc = document.getElementById("attack-frames-calc");
+const attackCDCalc = document.getElementById("attack-cd-calc");
 const apsCalc = document.getElementById("aps-calc");
 const nextBPCalc = document.getElementById("next-bp-calc");
 const critModCalc = document.getElementById("crit-mod-calc");
@@ -54,6 +55,7 @@ let wolfAttackDmgOnCrit;
 let wolfCount;
 let alphaCount;
 let attackFrames;
+let attackCooldown;
 let aps;
 let wolfDps;
 let wolvesDps;
@@ -148,6 +150,7 @@ function renderCalculatedStats() {
     }
 
     attackFramesCalc.textContent = attackFrames;
+    attackCDCalc.textContent = attackCooldown;
     apsCalc.textContent = aps.toFixed(2);
 
     wolfDpsCalc.textContent = convertToShortNumber(wolfDps);
@@ -256,10 +259,12 @@ function countWolves() {
 function calcAttackSpeed() {
     if (attackSpeedInput.value > 0) {
         attackFrames = findAttackFrames(attackSpeedInput.value, itemMasters.checked, enrage.checked);
-        aps = findAPS(attackFrames);
+        attackCooldown = findWolfAttackCooldown(cdrInput.value);
+        aps = findAPS(attackFrames, attackCooldown);
     } else {
         attackFrames = "";
-        aps = "";
+        attackCooldown = "";
+        aps = 0;
     }
 }
 
