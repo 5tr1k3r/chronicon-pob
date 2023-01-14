@@ -170,12 +170,12 @@ function load() {
     masterTamer.checked = true;
 
     damageInput.value = "12808487";
-    // attackSpeedInput.value = "";
+    attackSpeedInput.value = "96";
     critChanceInput.value = "96";
     critDmgInput.value = "570";
     frostDamageInput.value = "668";
     companionDmgInput.value = "2956";
-    // cdrInput.value = "";
+    cdrInput.value = "74";
 
     calcEverything();
 }
